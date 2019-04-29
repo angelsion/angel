@@ -1,0 +1,7 @@
+# 数据源配置
+spring:
+  datasource:
+    username: test
+    password: admin123
+    url: jdbc:mysql://129.204.77.72:3306/test?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&dataBaseType=write
+    driver-class-name: com.mysql.cj.jdbc.Driver

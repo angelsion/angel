@@ -1,6 +1,10 @@
 # Compiled class file
 *.class
-
+.idea
+.classpath
+build
+out
+target
 # Log file
 *.log
 
