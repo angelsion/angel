@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>彩票</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="alternate icon" type="image/png" href="../i/favicon.png">
+    <link rel="stylesheet" href="../css/amazeui.min.css"/>
+    <link rel="stylesheet" href="../css/app.css">
+
+    <script src="../js/jquery-3.4.0.min.js"></script>
+    <script src="../js/handlebars.min.js"></script>
+    <script src="../js/amazeui.js"></script>
+    <script src="../js/amazeui.widgets.helper.js"></script>
+
+</head>
+
+
+<body>
+<script type="text/x-handlebars-template" id="amz-tpl">
+    {{>header header}}
+    {{>navbar navbar}}
+</script>
+
+<script src="../js/menu.js"></script>
+<script>
+    var $tpl = $('#amz-tpl');
+    var source = $tpl.text();
+    var template = Handlebars.compile(source);
+    var data = {
+        header: {
+            "content": {
+                "title": "双色球"
+            }
+        }
+    };
+
+    var html = template(data);
+
+    $tpl.before(html);
+</script>
+<div class="am-box">
+    <ul class="am-box-list">
+        <li class="y">01</li>
+        <li class="e">08</li>
+        <li class="s">16</li>
+        <li class="s">24</li>
+        <li class="w">30</li>
+        <li class="l">33</li>
+        <li class="q" style="background:#3768da;">07</li>
+    </ul>
+</div>
+<div class="am-button">
+    <button type="button" class="am-btn am-btn-secondary am-round">换一注</button>
+</div>
+
+</body>
+
+<script>
+    var $slist = $(".am-box-list li");
+    var y=3;
+    jQuery(document).ready(function($) {
+        $("button").click(function(event) {
+            randomLotteryTicket();
+        });
+        // 第一次初始化
+        randomLotteryTicket();
+    });
+
+    //随机算法
+    function randomLotteryTicket() {
+        $slist.each(function(index, el) {
+            ///开始///随机函数
+            function createRandom(num ,from ,to )
+
+            {
+                var arr=[];
+                for(var i=from;i<=to;i++)
+                    arr.push(i);
+                arr.sort(function(){
+                    return 0.5-Math.random();
+                });
+                arr.length=num;
+                return arr;
+            }
+
+            function createRandom2(num , from , to)
+            {
+                var arr=[];
+                var json={};
+                while(arr.length<num)
+                {
+                    //产生单个随机数
+                    var ranNum=Math.ceil(Math.random()*(to-from))+from;
+                    //通过判断json对象的索引值是否存在 来标记 是否重复
+                    if(!json[ranNum])
+                    {
+                        json[ranNum]=1;
+                        arr.push(ranNum);
+                    }
+                }
+                return arr;
+            }
+            ///结束///随机函数
+
+            var arr=[];//声明一个空的数组(红球)
+            arr=createRandom2(6,1,33)/*将随机生成的0-33的7个数字赋值给arr*/
+            //定义了sort的比较函数将arr数组里面的数字
+            arr.sort(function(a,b){
+                return a-b;
+            });
+
+            //利用循环让每个li取到arr数组的值
+            for(var i=0;i<=$slist.length-1;i++){
+                $slist.eq(i).text(arr[i]);
+            }
+            var blueArr = [];
+            blueArr = createRandom2(1,1,16);
+            for(var i=0;i<blueArr.length;i++){
+                $slist.eq($slist.length-1).text(blueArr[i]);
+            }
+
+            /*每个圆转的度数等于  y*360*/
+            y++;
+            $slist.eq(index).css({
+                "transform": 'rotate('+y*360+'deg)',
+                "-moz-transform": 'rotate('+y*360+'deg)',
+                "-webkit-transform": 'rotate('+y*360+'deg)',
+                "-o-transform": 'rotate('+y*360+'deg)',
+                "-s-transform": 'rotate('+y*360+'deg)'
+            });
+
+        });
+        //判断随机生成的是不是小于10如果是的就给前面加上0如生成的是1那么就显示01
+        $slist.each(function(index, el) {
+            if (parseInt($(this).text())<10) {
+                var cc=$(this).text();
+                $(this).text("0"+cc)
+            }
+        });
+    }
+
+</script>
+</html>
